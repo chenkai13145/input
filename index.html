@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>双向</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    #deom{
+        width: 240px;
+        margin: 40px auto;
+    }
+    #deom div:first-child{
+        width: 100%;
+        display: flex;
+    }
+    #deom div input{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        outline: none;
+        border:1px solid green;
+        padding: 4px 8px;
+    }
+    #deom div button{
+           background-color: aquamarine;
+           display: inline-block;
+           color: aliceblue;
+           width: 60px;
+           text-align: center;
+           border: none;
+           outline: none;
+           transform: translateX(-10%);
+           cursor: pointer;
+    }
+    .search{
+        border:1px solid green;
+        border-radius:8px 0px 0px 0px;
+        max-height:120px;
+        overflow-y:auto;
+        display: none;
+        margin-top: 10px;
+        width: 234px;
+    }
+    .search p{
+        padding: 2px 4px;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <div id="deom">
+        <div>
+            <input type="text" value=''/>
+            <button>搜索</button>
+        </div>
+        <div class="search">
+
+        </div>
+    </div>
+</body>
+<script>
+(function(){
+      var arrlist=['asdsd','wdsdsde','qwewwr','dsfsdfe','gthyhydd','frfrgrs','lopuiu','poiouiu','iuyuytr','tiihjds','vdgsgds','xdsdhajsd','zsdkhjsahd','mkjohi','htyffjasd','rrtsdhysd']
+      var arr=[]
+      var searchDom=document.getElementById('deom').getElementsByClassName('search')[0];
+      var inputDom=document.getElementById('deom').getElementsByTagName('div')[0].getElementsByTagName('input')[0];
+      var obj={}
+      Object.defineProperty(obj,'text',{
+          get:function(){
+            return obj
+          },
+          set:function(newVal){
+            searchfn(newVal);
+            inputDom.value=newVal
+          }
+      })
+    inputDom.addEventListener('keyup',function(e){
+        obj.text=e.target.value
+    })
+    inputDom.addEventListener('blur',function(e){
+        searchDom.style.opcity="none"
+    })
+    inputDom.addEventListener('focus',function(e){
+       searchfn(e.target.value);
+    })
+  
+    function searchfn(val){
+        arr=[]
+        if(val!=null&&val.length>-1){
+            arr=arrlist.filter(item=>{
+               return item.indexOf(val)!=-1
+           })
+        }else{
+            arr=arrlist
+        }
+        arr.length===0?searchDom.style.display="none":searchDom.style.display="block"
+        var pDom=''
+        for(var i=0;i<arr.length;i++){
+            pDom+='<p>'+arr[i]+'</p>'
+        }
+        searchDom.innerHTML=pDom
+        var plist=searchDom.getElementsByTagName('p');
+       for(var i=0;i<plist.length;i++){
+           plist[i].index=i
+           plist[i].addEventListener('mouseenter',function(){
+               this.style.backgroundColor='green'
+               this.style.color='#fff'
+           })
+           plist[i].addEventListener('mouseleave',function(){
+               this.style.backgroundColor='#fff'
+               this.style.color='#000'
+           })
+           plist[i].addEventListener('click',function(e){
+            obj.text=arr[this.index]
+            searchDom.style.display='none'
+           })
+
+       }
+    }
+    })()
+</script>
+</html>
