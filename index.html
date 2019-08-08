@@ -83,9 +83,15 @@
     inputDom.addEventListener('keyup',function(e){
         obj.text=e.target.value
     })
-    inputDom.addEventListener('blur',function(e){
-        searchDom.style.opcity="none"
+    searchDom.addEventListener('mousemove',function(e){
+        inputDom.removeEventListener('blur',blurFn)
     })
+    searchDom.addEventListener('mouseleave',function(e){
+        inputDom.addEventListener('blur',blurFn)
+    })
+    function blurFn(){
+        searchDom.style.display="none"
+    }
     inputDom.addEventListener('focus',function(e){
        searchfn(e.target.value);
     })
